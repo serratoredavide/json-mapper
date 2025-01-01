@@ -19,7 +19,7 @@ object JsonMapper {
   }
 
   // Decoder personalizzato per appiattire un JSON stringa in Map[String, Json]
-  implicit val customDecoder: Decoder[Map[String, Json]] = Decoder.instance {
+  implicit val flattenDecoder: Decoder[Map[String, Json]] = Decoder.instance {
     cursor =>
       // Decodifica l'intero JSON
       cursor.value.as[Json].map { json =>
@@ -28,21 +28,21 @@ object JsonMapper {
   }
 
   // Encoder personalizzato per ricostruire il JSON da Map[String, Json]
-  implicit val customEncoder: Encoder[Map[String, Json]] = Encoder.instance {
-    map =>
-      // Ricostruisce il JSON nidificato partendo dalla mappa
-      def unflattenJson(map: Map[String, Json]): Json = {
-        map.foldLeft(Json.obj()) { case (acc, (key, value)) =>
-          val keys = key.split("\\.")
-          val nestedJson = keys.reverse.foldLeft(value) { (acc, k) =>
-            Json.obj(k -> acc)
-          }
-          acc.deepMerge(nestedJson)
-        }
-      }
+  // implicit val customEncoder: Encoder[Map[String, Json]] = Encoder.instance {
+  //   map =>
+  //     // Ricostruisce il JSON nidificato partendo dalla mappa
+  //     def unflattenJson(map: Map[String, Json]): Json = {
+  //       map.foldLeft(Json.obj()) { case (acc, (key, value)) =>
+  //         val keys = key.split("\\.")
+  //         val nestedJson = keys.reverse.foldLeft(value) { (acc, k) =>
+  //           Json.obj(k -> acc)
+  //         }
+  //         acc.deepMerge(nestedJson)
+  //       }
+  //     }
 
-      unflattenJson(map)
-  }
+  //     unflattenJson(map)
+  // }
 
 //   def main(args: Array[String]): Unit = {
 //     val jsonInput =
