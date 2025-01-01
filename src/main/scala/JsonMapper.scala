@@ -10,7 +10,8 @@ object JsonMapper {
       case Some(jsonObject) =>
         jsonObject.toMap.flatMap { case (key, value) =>
           val newKey = if (parentKey.isEmpty) key else s"$parentKey.$key"
-          flattenJson(value, newKey)
+          
+          Map(newKey -> value) ++ flattenJson(value, newKey)
         }
       case None =>
         // Se non è un oggetto, restituisci il valore
