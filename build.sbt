@@ -1,7 +1,7 @@
 
 // The simplest possible sbt build file is just one line:
 
-scalaVersion := "2.13.12"
+scalaVersion := "2.13.14"
 // That is, to create a valid sbt build, all you've got to do is define the
 // version of Scala you'd like your project to use.
 
@@ -13,7 +13,7 @@ scalaVersion := "2.13.12"
 
 // It's possible to define many kinds of settings, such as:
 
-name := "hello-world"
+name := "json-mapper"
 organization := "ch.epfl.scala"
 version := "1.0"
 
@@ -26,6 +26,14 @@ version := "1.0"
 // You can define other libraries as dependencies in your build like this:
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
+
+val circeVersion = "0.14.10"
+libraryDependencies ++= Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % circeVersion)
+
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % Test
 
 // Here, `libraryDependencies` is a set of dependencies, and by using `+=`,
